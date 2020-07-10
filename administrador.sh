@@ -9,6 +9,7 @@ do
 	echo ""
 	select opcion in "Administración de Usuarios" "Programación de Tareas" "Tareas de Mantenimiento" "Tareas de Usuarios en Sesión" "Funciones Extendidas" "Salir"
 	do
+		# Asigna el atributo de ejecucón y despues ejecuta el script correspondiente a la función
 		case $REPLY in
 			1)
 				chmod +x admin_usuarios/administracion_usuarios.sh

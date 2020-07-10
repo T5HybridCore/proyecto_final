@@ -4,6 +4,7 @@
 while :
 do
     clear
+    # Obtiene todos los dispositivos en el sistema
     dispositivos=( $(lsblk -dp | grep -o '^/dev/sd[^ ]*') )
 	PS3=""$'\n'"=========================================================="$'\n\n'"Opción [1-$((${#dispositivos[@]} + 1))]: "
 	echo "=================== Chequeo (Arranque) ==================="
@@ -38,9 +39,14 @@ do
                 case $REPLY in
                     1)
                         clear
+                        # Si el dispositivo a checar al arranque es sda, crear el archivo
+                        # forcefsck en raiz para forzar el chequeo
                         if [ $opdispositivo == "/dev/sda" ]; then
                             touch /forcefsck
                         else
+                            # Caso contrario para cualquier otro dispositivo
+                            # Habilita el chequeo en el(los) siguiente(s) reinicio(s)
+                            # -c 1      es para las veces que se checara el sistema al inicio
                             tune2fs -c 1 $opdispositivo
                         fi
                         echo "El dispositivo '$opdispositivo' se checará en el siguiente arranque del sistema"
@@ -52,6 +58,7 @@ do
                         while :
                         do
                             clear
+                            # Obtiene todos los volumenes en el dispositivo
                             volumenes=( $(fdisk -l $opdispositivo | grep '^/dev' | cut -d' ' -f1) )
                             PS3=""$'\n'"=========================================================="$'\n\n'"Opción [1-$((${#volumenes[@]} + 1))]: "
                             echo "=================== Chequeo (Arranque) ==================="
@@ -74,9 +81,14 @@ do
 
                                 # Opción valida
                                 clear
+                                # Si el volumen a checar al arranque es sda1, crear el archivo
+                                # forcefsck en raiz para forzar el chequeo
                                 if [ $opvolumen == "/dev/sda1" ]; then
                                     touch /forcefsck
                                 else
+                                    # Caso contrario para cualquier otro volumen
+                                    # Habilita el chequeo en el(los) siguiente(s) reinicio(s)
+                                    # -c 1      es para las veces que se checara el sistema al inicio
                                     tune2fs -c 1 $opvolumen
                                 fi
                                 echo "El volumen '$opvolumen' se checará en el siguiente arranque del sistema"

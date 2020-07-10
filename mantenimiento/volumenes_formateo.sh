@@ -4,6 +4,7 @@
 while :
 do
     clear
+    # Obtiene todos los dispositivos en el sistema
     dispositivos=( $(lsblk -dp | grep -o '^/dev/sd[^ ]*') )
 	PS3=""$'\n'"=========================================================="$'\n\n'"Opción [1-$((${#dispositivos[@]} + 1))]: "
 	echo "======================== Formateo ========================"
@@ -28,13 +29,13 @@ do
         while :
         do
             clear
+            # Obtiene todos los volumenes en el dispositivo
             volumenes=( $(fdisk -l $opdispositivo | grep '^/dev' | cut -d' ' -f1) )
             PS3=""$'\n'"=========================================================="$'\n\n'"Opción [1-$((${#volumenes[@]} + 1))]: "
             echo "======================== Formateo ========================"
             echo ""
             echo "Seleccione un volumen de la lista"
             echo ""
-            volumenes=( $(fdisk -l $opdispositivo | grep '^/dev' | cut -d' ' -f1) )
             select opvolumen in "${volumenes[@]}" "Regresar"
             do
                 # Regresar
@@ -58,6 +59,7 @@ do
                     echo ""
                     echo "Información del volumen"
                     echo ""
+                    # Muestra la informacion del volumen
                     parted $opvolumen unit MB print
                     echo ""
                     echo "Seleccione un formato para el volumen"
@@ -65,6 +67,7 @@ do
                     formato=""
                     select opformato in "EXT4" "NTFS" "Regresar"
                     do
+                        # Seleccion del formato
                         case $REPLY in
 							1)
                                 formato="ext4"
@@ -87,8 +90,9 @@ do
                         echo ""
                         read -p "Presione una tecla para continuar..." -n1 -s
                         clear
+                        # En caso de ser ntfs
                         wipefs -a $opvolumen
-                        mkfs -t $formato $opvolumen
+                        mkfs -t $formato $opvolumen # Formateo del volumen
                         echo ""
                         echo "El volumen '$opvolumen' se formateo correctamente"
                         echo ""

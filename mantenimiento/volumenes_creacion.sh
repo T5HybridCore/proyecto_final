@@ -4,6 +4,7 @@
 while :
 do
     clear
+    # Obtiene todos los dispositivos en el sistema
     dispositivos=( $(lsblk -dp | grep -o '^/dev/sd[^ ]*') )
 	PS3=""$'\n'"=========================================================="$'\n\n'"Opción [1-$((${#dispositivos[@]} + 1))]: "
 	echo "======================== Creación ========================"
@@ -31,7 +32,7 @@ do
         clear
         echo "Información del dispositivo"
         echo ""
-        parted $opdispositivo unit KB print free
+        parted $opdispositivo unit KB print free # Muestra el espacio libre del dispositivo seleccionado
         echo ""
         if [[ $espacio -lt 100000 ]]; then
             echo "Espacio en disco insuficiente. Se requieren 100 MB mínimo."
@@ -52,7 +53,13 @@ do
             echo ""
             read -p "Presione una tecla para continuar..." -n1 -s
 
+            # Utilizamos la utilidad parted para todo lo relacionado con volumenes
             parted -s $opdispositivo mklabel gpt
+            # Creamos el volumen
+            # unit KB       para manejar todo en kb
+            # mkpart        crear el volumen
+            # primary       tipo de volumen (Primario/Lógico)
+            # 0 $tam        inicio y fin del volumen en el disco
             parted $opdispositivo unit KB mkpart primary 0 $tam
 
             clear

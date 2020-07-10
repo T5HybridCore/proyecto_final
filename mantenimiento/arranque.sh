@@ -14,6 +14,7 @@ do
 				# Menu Habilitar/Inhabilitar Modo Mantenimiento
 				while :
 				do
+					# Obtener el estado de arranque del sistema
 					estado=$(systemctl get-default)
 					mant=false
 					mantTexto="Habilitar"
@@ -40,10 +41,12 @@ do
 							1)
 								clear
 								echo -n "Se "
+								# Deshabilitar el modo de mantenimiento
 								if [ "$mant" = true ]; then
 									systemctl set-default graphical.target > /dev/null 2>&1
 									echo -n "inhabilito"
 								else
+									# Habilitar el modo de mantenimiento
 									systemctl set-default rescue.target > /dev/null 2>&1
 									echo -n "habilito"
 								fi
@@ -53,6 +56,7 @@ do
 								if [ "$mant" = false ]; then
 									echo "Se enviara un mensaje a los usuarios activos y se apagara el sistema en 60 segundos."
 									read -p "Presione una tecla para continuar..." -n1 -s
+									# Apaga el sistema en 1 min y envia un mensaje a los usuarios activos
 									shutdown -r +1 "El administrador de sistema activo un mantenimiento. El sistema se reiniciará en 60 segundos."
 								else
 									read -p "Presione una tecla para continuar..." -n1 -s
@@ -81,6 +85,8 @@ do
 					echo ""
 					select opcion in "Apagar el Sistema" "Modo de Mantenimiento" "Multi-Usuario" "Multi-Usuario (Entorno Gráfico)" "Reiniciar" "Regresar"
 					do
+						# Asigna el valor correspondiente del modo de arranque de sistema a una variable
+						# y usuarla posteriormente
 						case $REPLY in
 							1)
 								modo="poweroff"

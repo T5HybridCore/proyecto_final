@@ -1,10 +1,10 @@
 clear
-echo "\e[94m$(figlet Configurar permisos)\e[0m"
+echo "\e[94m$(figlet Configurar permisos)\e[0m"   #Tiutulo de nuestro configurador de permisos
 echo "dame el directorio "
-read dir
+read dir				#Leemos el archovo al cual modificar los permisos
 
 op=0
-while [ $op -ne 6 ]; do
+while [ $op -ne 6 ]; do      #while del menu principal
 clear
 	echo "1) Permisos del propietario"
 	echo "2) Permisos del grupo"
@@ -15,25 +15,25 @@ clear
 	read op
 	clear
 
-	case "$op" in
-	1) op2=0
+	case "$op" in         #case del permisos propietario
+	1) op2=0			
 	   
-  	   while [ $op2 -ne 4 ]; do
+  	   while [ $op2 -ne 4 ]; do   #while de submenu para los permisos del propietario
 	   clear
-  	   ls -l $dir > a2
-  	   if [ $(cut -b 2 a2) = "-" ];
+  	   ls -l $dir > a2		#mostramos los permisos del directorio introducido y los guardamos en un archivo a2
+  	   if [ $(cut -b 2 a2) = - ];	#con el cut indicamos que solo queremos ver el bit 2 de la primer linea de a2
 	   then
-  	 	echo "1)Lectura [Desactivado]"
+  	 	echo "1)Lectura [Desactivado]"		#esto se hace para mostrar si esta activo o inactivo el permiso de lectura, escritura, ejecucion
            else 	
 		echo "1)Lectura [Activado]"
   	   fi
-  	   if [ $(cut -b 3 a2) = "-" ];
+  	   if [ $(cut -b 3 a2) = - ];    #mostrando el bit 3 de la salida del comando ls obtemenos el escritura para propietario
   	   then 
-		echo "2)Escritura [Desactivado]"
+		echo "2)Escritura [Desactivado]"    #y asi para mostrar todos los permisos que tiene actualmente el archivo
   	   else
 		echo "2)Escritura [Activado]"
            fi
-  	   if [ $(cut -b 4 a2) = "-" ];
+  	   if [ $(cut -b 4 a2) = - ];
   	   then 
 		echo "3)Ejecucion [Desactivado]"
   	   else
@@ -45,7 +45,7 @@ clear
 	   case "$op2" in
            1)if [ $(cut -b 2 a2) = - ];
 	     then
-		sudo chmod u+r $dir
+		sudo chmod u+r $dir        #Una vez seleccionada la opcion cambia el permiso
 	     else
 		sudo chmod u-r $dir
              fi;;
@@ -164,30 +164,29 @@ clear
 
 
 	4)clear
-	 echo "Sbit ingrese a-activar/d-desactivar"
+	 echo "Sbit ingrese a-activar/d-desactivar"   #opciones para el sbit
 	 read tb
-	 if [ $tb = a ];
+	 if [ $tb = a ];          #Lee la respuesta y lo activa 
 	 then 
-	 chmod u+s $dir
+	 chmod u+s $dir         #chmod u+s para activar el sbit o g+s para el grupo
 	 echo "Sbit activado"
 	 else
-	 chmod u-s $dir
+	 chmod u-s $dir           #con u-s para seactivarlo
 	 echo "Sbit desactivado"
 	 fi;;
 
 	5)clear
-	 echo "Tbit ingrese a-actibar/d-desactivar"
+	 echo "Tbit ingrese a-actibar/d-desactivar"  #opciones para el tbit
 	read sb
 	if [ $sb = a ];
 	then
-	chmod o+t $dir
+	chmod o+t $dir         #o+t para activarlo
 	echo "Tbit activado"
 	else 
-	chmod o-t $dir
+	chmod o-t $dir			#o-t para desactivarlos
 	echo "Tbit desactivado"
 	fi;;
 
 	
-esac 
-done	
-
+esac #fin del case principal
+done	#fin del menu

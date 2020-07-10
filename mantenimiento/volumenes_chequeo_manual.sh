@@ -4,6 +4,7 @@
 while :
 do
     clear
+    # Obtiene todos los dispositivos en el sistema
     dispositivos=( $(lsblk -dp | grep -o '^/dev/sd[^ ]*') )
 	PS3=""$'\n'"=========================================================="$'\n\n'"Opción [1-$((${#dispositivos[@]} + 1))]: "
 	echo "==================== Chequeo (Manual) ===================="
@@ -40,10 +41,11 @@ do
                         clear
                         echo "Se procederá a checar '$opdispositivo'"
                         echo ""
-                        fsck $opdispositivo
+                        fsck $opdispositivo # Checa el dispositivo indicado y se guarda el resultado de ejecución en la siguiente variable
                         resultado=$?
                         echo ""
                         echo -n "Resultado: [$resultado] "
+                        # Muestra el mensaje de error y algunas recomendaciones a seguir
                         case $resultado in
                             0)
                                 echo "No hay errores en el sistema de archivos"
@@ -84,6 +86,7 @@ do
                         while :
                         do
                             clear
+                            # Obtiene todos los volumenes en el dispositivo
                             volumenes=( $(fdisk -l $opdispositivo | grep '^/dev' | cut -d' ' -f1) )
                             PS3=""$'\n'"=========================================================="$'\n\n'"Opción [1-$((${#volumenes[@]} + 1))]: "
                             echo "==================== Chequeo (Manual) ===================="
