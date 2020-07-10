@@ -1,0 +1,7 @@
+#numero usuario contraseña
+user01: testman nuevacontra
+user02: pruebauser userpass
+user03: pepe josepass
+user04: andrew passprueba
+user05: noexisto nada
+user06: FIN

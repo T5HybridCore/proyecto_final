@@ -1,0 +1,11 @@
+#
+grupo:Prueba
+##Formato a seguir: Username0n:nombredeusuario
+user01:testman
+user02:pruebauser
+user03:pepe
+user04:andrew
+user05:FIN
+#el ultimo usuario deberá decir FIN para que el programa se detenga 
+#Contraseña para todos los usuarios
+pass:1234
